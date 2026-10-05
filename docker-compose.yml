@@ -73,6 +73,30 @@ services:
     depends_on:
       - crm_app
 
+  loki:
+    image: grafana/loki:latest
+    container_name: crm_loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - crm_net
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: crm_promtail
+    restart: unless-stopped
+    volumes:
+      - ./promtail/config.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - crm_net
+    depends_on:
+      - loki
+
   grafana:
     image: grafana/grafana:latest
     container_name: crm_grafana
@@ -85,6 +109,7 @@ services:
       - crm_net
     depends_on:
       - prometheus
+      - loki
 
 networks:
   crm_net:
