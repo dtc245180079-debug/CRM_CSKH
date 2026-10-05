@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careflow CRM Pro - Quản Trị Khách Hàng & Chăm Sóc Đỉnh Cao</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    :root {
+      --primary: #4338ca;
+      --primary-hover: #3730a3;
+      --primary-subtle: #e0e7ff;
+      --secondary: #0ea5e9;
+      --accent: #8b5cf6;
+      --dark-sidebar: #0f172a;
+      --dark-sidebar-hover: #1e293b;
+      --body-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --border-radius-xl: 18px;
+      --border-radius-md: 12px;
+      --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --card-shadow-hover: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--body-bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* App Layout */
+    .app-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Modern Sidebar */
+    .app-sidebar {
+      width: 270px;
+      background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1040;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+      transition: all 0.3s ease;
+    }
+
+    .brand-section {
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .sidebar-menu {
+      padding: 20px 14px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    .menu-group-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #64748b;
+      letter-spacing: 1px;
+      padding: 10px 14px 6px;
+    }
+
+    .nav-custom-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: all 0.2s ease;
+      background: transparent;
+      border: none;
+      text-align: left;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+
+    .nav-custom-btn i {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      transition: color 0.2s ease;
+    }
+
+    .nav-custom-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    .nav-custom-btn:hover i {
+      color: #38bdf8;
+    }
+
+    .nav-custom-btn.active {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(168, 85, 247, 0.2) 100%);
+      color: #ffffff;
+      border: 1px solid rgba(165, 180, 252, 0.3);
+    }
+
+    .nav-custom-btn.active i {
+      color: #818cf8;
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Main Content Area */
+    .app-main {
+      margin-left: 270px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Top Navbar */
+    .top-navbar {
+      height: 72px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+    }
+
+    .search-wrapper {
+      position: relative;
+      width: 380px;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      height: 42px;
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      border-radius: 24px;
+      padding: 0 16px 0 42px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    .search-wrapper input:focus {
+      background: #ffffff;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+      outline: none;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .quick-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulseGreen 2s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    /* Content Body */
+    .content-body {
+      padding: 32px;
+    }
+
+    /* KPI Metric Cards */
+    .metric-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius-xl);
+      padding: 22px 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow-hover);
+      border-color: #cbd5e1;
+    }
+
+    .metric-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .metric-val {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-top: 6px;
+    }
+
+    .metric-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Card Panels */
+    .panel-box {
+      background: var(--card-bg);
+      border-radius: var(--border-radius-xl);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .panel-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+    }
+
+    .panel-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-body {
+      padding: 24px;
+    }
+
+    /* Form Controls */
+    .form-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    /* Buttons */
+    .btn-gradient-primary {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #ffffff;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    .btn-gradient-primary:hover {
+      background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
+    }
+
+    .btn-gradient-success {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      color: #ffffff;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+
+    .btn-gradient-success:hover {
+      background: linear-gradient(135deg, #047857 0%, #059669 100%);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* Custom Modern Tabs */
+    .nav-tabs-modern {
+      border-bottom: 2px solid #f1f5f9;
+      display: flex;
+      gap: 12px;
+      padding: 0 24px;
+    }
+
+    .nav-tabs-modern .nav-link {
+      border: none;
+      background: transparent;
+      padding: 14px 16px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tabs-modern .nav-link:hover {
+      color: var(--text-main);
+    }
+
+    .nav-tabs-modern .nav-link.active {
+      color: #4f46e5;
+    }
+
+    .nav-tabs-modern .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #4f46e5;
+      border-radius: 4px 4px 0 0;
+    }
+
+    /* Tables */
+    .table-modern {
+      margin-bottom: 0;
+    }
+
+    .table-modern th {
+      background-color: #f8fafc;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .table-modern td {
+      padding: 16px 20px;
+      vertical-align: middle;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.92rem;
+    }
+
+    .table-modern tbody tr {
+      transition: background-color 0.15s ease;
+    }
+
+    .table-modern tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    /* Customer Avatar Icon */
+    .customer-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+      color: #4338ca;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    /* Status Badges */
+    .badge-soft-success {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+    }
+
+    .badge-soft-warning {
+      background: #fffbeb;
+      color: #d97706;
+      border: 1px solid #fde68a;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+    }
+
+    .badge-soft-primary {
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+    }
+
+    .badge-soft-purple {
+      background: #faf5ff;
+      color: #9333ea;
+      border: 1px solid #e9d5ff;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+    }
+
+    /* Action Icon Buttons */
+    .btn-action-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #64748b;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-action-icon:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+
+    .btn-action-icon.view:hover {
+      background: #e0f2fe;
+      color: #0284c7;
+      border-color: #bae6fd;
+    }
+
+    .btn-action-icon.edit:hover {
+      background: #e0e7ff;
+      color: #4f46e5;
+      border-color: #c7d2fe;
+    }
+
+    .btn-action-icon.delete:hover {
+      background: #fee2e2;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+
+    .btn-action-icon.toggle:hover {
+      background: #ecfdf5;
+      color: #059669;
+      border-color: #a7f3d0;
+    }
+
+    /* Timeline */
+    .timeline-modern {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline-modern::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: #e2e8f0;
+    }
+
+    .timeline-card {
+      position: relative;
+      margin-bottom: 20px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .timeline-card:hover {
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: #cbd5e1;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -24px;
+      top: 18px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #4f46e5;
+      border: 3px solid #ffffff;
+      box-shadow: 0 0 0 2px #4f46e5;
+    }
+
+    /* Modal Styling */
+    .modal-content-custom {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-header-custom {
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 20px 24px;
+    }
+
+    /* Toast Notification */
+    .toast-container-custom {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 2000;
+    }
+
+    .custom-toast {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #10b981;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 300px;
+      animation: slideInRight 0.3s ease;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Links quick bar */
+    .portal-link-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.84rem;
+      margin-bottom: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .portal-link-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #38bdf8;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 992px) {
+      .app-sidebar {
+        transform: translateX(-100%);
+      }
+
+      .app-sidebar.show {
+        transform: translateX(0);
+      }
+
+      .app-main {
+        margin-left: 0;
+      }
+
+      .search-wrapper {
+        width: 220px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container-custom" id="toastContainer"></div>
+
+  <div class="app-wrapper">
+    <!-- LEFT SIDEBAR -->
+    <aside class="app-sidebar" id="sidebar">
+      <!-- Brand -->
+      <div class="brand-section">
+        <div class="brand-logo-icon">
+          <i class="bi bi-shield-check text-white"></i>
+        </div>
+        <div>
+          <div class="brand-title">Careflow CRM</div>
+          <div class="brand-subtitle">Customer Care Pro</div>
+        </div>
+      </div>
+
+      <!-- Menu Navigation -->
+      <div class="sidebar-menu">
+        <div class="menu-group-title">QUẢN LÝ CHÍNH</div>
+        <button class="nav-custom-btn active" onclick="switchMainTab('dashboard', this)">
+          <i class="bi bi-grid-1x2-fill"></i>
+          <span>Tổng Quan Dashboard</span>
+        </button>
+        <button class="nav-custom-btn" onclick="switchMainTab('customers', this)">
+          <i class="bi bi-people-fill"></i>
+          <span>Khách Hàng</span>
+        </button>
+        <button class="nav-custom-btn" onclick="switchMainTab('interactions', this)">
+          <i class="bi bi-chat-quote-fill"></i>
+          <span>Lịch Sử Chăm Sóc</span>
+        </button>
+        <button class="nav-custom-btn" onclick="switchMainTab('contacts', this)">
+          <i class="bi bi-telephone-inbound-fill"></i>
+          <span>Đầu Mối Liên Hệ</span>
+        </button>
+
+        <div class="menu-group-title mt-4">HỆ THỐNG & GIÁM SÁT</div>
+        <a href="http://192.168.195.131:5050" target="_blank" class="portal-link-item">
+          <span><i class="bi bi-database me-2 text-info"></i>pgAdmin 4 (DB)</span>
+          <i class="bi bi-box-arrow-up-right small"></i>
+        </a>
+        <a href="http://192.168.195.131:9099" target="_blank" class="portal-link-item">
+          <span><i class="bi bi-activity me-2 text-warning"></i>Prometheus Metrics</span>
+          <i class="bi bi-box-arrow-up-right small"></i>
+        </a>
+        <a href="http://192.168.195.131:3001" target="_blank" class="portal-link-item">
+          <span><i class="bi bi-speedometer2 me-2 text-primary"></i>Grafana Dashboard</span>
+          <i class="bi bi-box-arrow-up-right small"></i>
+        </a>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="d-flex align-items-center gap-3">
+          <div
+            class="rounded-circle bg-primary bg-opacity-25 p-2 text-primary d-flex align-items-center justify-content-center"
+            style="width: 38px; height: 38px;">
+            <i class="bi bi-person-circle fs-5"></i>
+          </div>
+          <div>
+            <div class="text-white fw-bold small">Admin CSKH</div>
+            <div class="text-muted" style="font-size: 0.72rem;">Phiên bản 2.5 Pro</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT -->
+    <main class="app-main">
+      <!-- Top Navbar Header -->
+      <header class="top-navbar">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-sm btn-light d-lg-none" onclick="toggleSidebar()">
+            <i class="bi bi-list fs-5"></i>
+          </button>
+          <div class="search-wrapper">
+            <i class="bi bi-search"></i>
+            <input type="text" id="globalSearchInput" placeholder="Tìm kiếm nhanh khách hàng, công ty, SĐT..."
+              oninput="handleSearch()">
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-light rounded-pill px-3 py-1 text-secondary border d-flex align-items-center gap-2"
+            onclick="loadAllData()" title="Đồng bộ dữ liệu mới nhất">
+            <i class="bi bi-arrow-clockwise"></i>
+            <span class="small fw-semibold d-none d-md-inline">Làm Mới</span>
+          </button>
+
+          <div class="quick-status-badge">
+            <div class="pulse-dot"></div>
+            <span>Máy chủ trực tuyến</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Body Container -->
+      <div class="content-body">
+
+        <!-- SECTION 1: KPI CARDS -->
+        <div class="row g-4 mb-4" id="kpiSection">
+          <!-- Total Customers -->
+          <div class="col-xl-3 col-sm-6">
+            <div class="metric-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="metric-label">Tổng Khách Hàng</div>
+                  <div class="metric-val text-primary" id="kpiCustomers">0</div>
+                  <div class="small text-muted mt-1"><i class="bi bi-check-circle-fill text-success me-1"></i>Đang quản
+                    trị</div>
+                </div>
+                <div class="metric-icon-box" style="background: #e0e7ff; color: #4338ca;">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Interactions -->
+          <div class="col-xl-3 col-sm-6">
+            <div class="metric-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="metric-label">Lượt Tương Tác</div>
+                  <div class="metric-val" style="color: #0284c7;" id="kpiInteractions">0</div>
+                  <div class="small text-muted mt-1"><i class="bi bi-chat-dots-fill text-info me-1"></i>Toàn thời gian
+                  </div>
+                </div>
+                <div class="metric-icon-box" style="background: #e0f2fe; color: #0284c7;">
+                  <i class="bi bi-chat-left-text-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Follow-ups -->
+          <div class="col-xl-3 col-sm-6">
+            <div class="metric-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="metric-label">Cần Chăm Sóc Gấp</div>
+                  <div class="metric-val text-warning" id="kpiPending">0</div>
+                  <div class="small text-muted mt-1"><i
+                      class="bi bi-exclamation-circle-fill text-warning me-1"></i>Trạng thái Pending</div>
+                </div>
+                <div class="metric-icon-box" style="background: #fef3c7; color: #d97706;">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secondary Contacts -->
+          <div class="col-xl-3 col-sm-6">
+            <div class="metric-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="metric-label">Đầu Mối Liên Hệ Phụ</div>
+                  <div class="metric-val text-success" id="kpiContacts">0</div>
+                  <div class="small text-muted mt-1"><i class="bi bi-telephone-fill text-success me-1"></i>Kênh
+                    Zalo/Email...</div>
+                </div>
+                <div class="metric-icon-box" style="background: #ecfdf5; color: #059669;">
+                  <i class="bi bi-telephone-inbound-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: WORKSPACE (QUICK ACTION FORMS & DATA PANELS) -->
+        <div class="row g-4">
+
+          <!-- LEFT COLUMN: INTERACTIVE FORMS -->
+          <div class="col-xl-4 col-lg-5" id="formColumn">
+            <div class="panel-box">
+              <div class="panel-header bg-white">
+                <div class="panel-title">
+                  <i class="bi bi-lightning-charge-fill text-warning"></i>
+                  <span>Thao Tác Nghiệp Vụ</span>
+                </div>
+              </div>
+
+              <!-- Action Sub-tabs -->
+              <div class="p-3 bg-light border-bottom">
+                <ul class="nav nav-pills nav-fill gap-1" id="formPills">
+                  <li class="nav-item">
+                    <button class="nav-link active small py-2 fw-semibold" id="pill-cust-btn" data-bs-toggle="pill"
+                      data-bs-target="#pill-cust" type="button">
+                      <i class="bi bi-person-plus me-1"></i> Khách Hàng
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link small py-2 fw-semibold" id="pill-inter-btn" data-bs-toggle="pill"
+                      data-bs-target="#pill-inter" type="button">
+                      <i class="bi bi-chat-dots me-1"></i> Tương Tác
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link small py-2 fw-semibold" id="pill-contact-btn" data-bs-toggle="pill"
+                      data-bs-target="#pill-contact" type="button">
+                      <i class="bi bi-telephone me-1"></i> Liên Hệ
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="panel-body">
+                <div class="tab-content">
+
+                  <!-- Form 1: Khách Hàng -->
+                  <div class="tab-pane fade show active" id="pill-cust">
+                    <form id="customerForm">
+                      <input type="hidden" id="editCustomerId" value="">
+                      <div class="mb-3">
+                        <label class="form-label">Họ và tên khách hàng <span class="text-danger">*</span></label>
+                        <input type="text" id="custName" class="form-control" placeholder="Ví dụ: Nguyễn Văn An"
+                          required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Địa chỉ Email <span class="text-danger">*</span></label>
+                        <input type="email" id="custEmail" class="form-control" placeholder="an.nguyen@congty.com"
+                          required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Số điện thoại liên hệ</label>
+                        <input type="text" id="custPhone" class="form-control" placeholder="0912 345 678">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Công ty / Doanh nghiệp</label>
+                        <input type="text" id="custCompany" class="form-control"
+                          placeholder="Tập đoàn FPT / Viettel...">
+                      </div>
+                      <div class="d-flex gap-2 pt-2">
+                        <button type="submit" id="custSubmitBtn" class="btn btn-gradient-primary flex-grow-1">
+                          <i class="bi bi-save2 me-1"></i> Lưu Khách Hàng
+                        </button>
+                        <button type="button" id="custCancelBtn" class="btn btn-outline-secondary d-none"
+                          onclick="cancelEditCustomer()">
+                          Hủy
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- Form 2: Tương Tác Chăm Sóc -->
+                  <div class="tab-pane fade" id="pill-inter">
+                    <form id="interactionForm">
+                      <div class="mb-3">
+                        <label class="form-label">Chọn Khách Hàng <span class="text-danger">*</span></label>
+                        <select id="intCustomerId" class="form-select" required></select>
+                      </div>
+                      <div class="row g-2 mb-3">
+                        <div class="col-6">
+                          <label class="form-label">Loại tương tác</label>
+                          <select id="intType" class="form-select">
+                            <option value="Tư vấn">Tư vấn giải pháp</option>
+                            <option value="Báo giá">Gửi báo giá</option>
+                            <option value="Gọi điện">Cuộc gọi trao đổi</option>
+                            <option value="Hỗ trợ kỹ thuật">Hỗ trợ kỹ thuật</option>
+                            <option value="Chăm sóc sau bán">Chăm sóc tái ký</option>
+                          </select>
+                        </div>
+                        <div class="col-6">
+                          <label class="form-label">Trạng thái</label>
+                          <select id="intStatus" class="form-select">
+                            <option value="Pending">⏳ Chờ xử lý</option>
+                            <option value="Completed">✅ Hoàn thành</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Nội dung trao đổi chi tiết <span class="text-danger">*</span></label>
+                        <textarea id="intContent" class="form-control" rows="3"
+                          placeholder="Ghi chép tóm tắt nội dung trao đổi với khách hàng..." required></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-gradient-success w-100">
+                        <i class="bi bi-send-check me-1"></i> Ghi Nhận Tương Tác
+                      </button>
+                    </form>
+                  </div>
+
+                  <!-- Form 3: Thêm Kênh Đầu Mối Phụ -->
+                  <div class="tab-pane fade" id="pill-contact">
+                    <form id="contactForm">
+                      <div class="mb-3">
+                        <label class="form-label">Chọn Khách Hàng <span class="text-danger">*</span></label>
+                        <select id="contactCustomerId" class="form-select" required></select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Kênh liên hệ</label>
+                        <select id="contactChannel" class="form-select">
+                          <option value="Zalo">Zalo cá nhân / Nhóm</option>
+                          <option value="Email">Email công việc</option>
+                          <option value="Điện thoại">Điện thoại nội bộ</option>
+                          <option value="Telegram">Telegram</option>
+                          <option value="Gặp trực tiếp">Gặp trực tiếp tại VP</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Ghi chú thông tin liên hệ</label>
+                        <textarea id="contactNote" class="form-control" rows="3"
+                          placeholder="Ví dụ: Trợ lý Mr. Long 0905... phụ trách ký HĐ"></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-gradient-primary w-100">
+                        <i class="bi bi-bookmark-plus me-1"></i> Thêm Kênh Liên Hệ
+                      </button>
+                    </form>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: MASTER DATA TABLES -->
+          <div class="col-xl-8 col-lg-7">
+
+            <!-- PANEL: CUSTOMERS TABLE -->
+            <div class="panel-box" id="panelCustomers">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <i class="bi bi-person-lines-fill text-primary"></i>
+                  <span>Danh Sách Khách Hàng Doanh Nghiệp</span>
+                </div>
+                <div class="text-muted small">
+                  Hiển thị <span id="customerCountBadge" class="fw-bold text-dark">0</span> hồ sơ
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-modern align-middle" id="customerTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 60px;">Mã</th>
+                      <th>Khách Hàng</th>
+                      <th>Email Liên Hệ</th>
+                      <th>Điện Thoại</th>
+                      <th>Công Ty</th>
+                      <th class="text-end" style="width: 140px;">Hành Động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Injected dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL: INTERACTIONS & CONTACTS -->
+            <div class="panel-box" id="panelHistory">
+              <div class="panel-header p-0">
+                <div class="nav-tabs-modern" id="historyTabs">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-interactions">
+                    <i class="bi bi-clock-history me-1"></i> Nhật Ký Chăm Sóc Gần Đây
+                  </button>
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-contacts">
+                    <i class="bi bi-person-rolodex me-1"></i> Danh Sách Đầu Mối Phụ
+                  </button>
+                </div>
+              </div>
+
+              <div class="tab-content">
+                <!-- Tab Lịch Sử Tương Tác -->
+                <div class="tab-pane fade show active" id="tab-interactions">
+                  <div class="table-responsive">
+                    <table class="table table-modern align-middle" id="interactionTable">
+                      <thead>
+                        <tr>
+                          <th>Khách Hàng</th>
+                          <th>Phân Loại</th>
+                          <th>Nội Dung Chi Tiết</th>
+                          <th>Thời Điểm</th>
+                          <th>Trạng Thái</th>
+                          <th class="text-end" style="width: 120px;">Xử Lý</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Injected dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Tab Danh Sách Đầu Mối Phụ -->
+                <div class="tab-pane fade" id="tab-contacts">
+                  <div class="table-responsive">
+                    <table class="table table-modern align-middle" id="contactsTable">
+                      <thead>
+                        <tr>
+                          <th>Khách Hàng</th>
+                          <th>Kênh Liên Lạc</th>
+                          <th>Ghi Chú</th>
+                          <th>Ngày Cập Nhật</th>
+                          <th class="text-end" style="width: 80px;">Xóa</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Injected dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL: HỒ SƠ & TIMELINE CHI TIẾT CỦA KHÁCH HÀNG -->
+  <div class="modal fade" id="customerDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header-custom d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-3">
+            <div class="customer-avatar" style="width: 48px; height: 48px; font-size: 1.2rem;" id="modalAvatar">
+              KH
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold mb-0 text-dark" id="detailCustomerName">Hồ Sơ Khách Hàng</h5>
+              <span class="text-muted small" id="detailCustomerSubtitle">Thông tin tổng hợp & lịch sử chăm sóc</span>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <!-- Customer Meta Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="p-3 rounded-3 bg-light border">
+                <div class="small text-muted mb-1"><i class="bi bi-envelope me-1"></i>Email</div>
+                <div class="fw-bold text-dark text-truncate" id="detailCustomerEmail">-</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 rounded-3 bg-light border">
+                <div class="small text-muted mb-1"><i class="bi bi-telephone me-1"></i>Điện thoại</div>
+                <div class="fw-bold text-dark" id="detailCustomerPhone">-</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 rounded-3 bg-light border">
+                <div class="small text-muted mb-1"><i class="bi bi-building me-1"></i>Công ty / Doanh nghiệp</div>
+                <div class="fw-bold text-dark text-truncate" id="detailCustomerCompany">-</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Area -->
+          <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-clock-history text-primary"></i>
+            <span>Dòng Thời Gian Tương Tác & Chăm Sóc (Timeline)</span>
+          </h6>
+
+          <div class="timeline-modern" id="customerTimeline"
+            style="max-height: 340px; overflow-y: auto; padding-right: 10px;">
+            <!-- Timeline Cards -->
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light border-top p-3"
+          style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+          <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let searchTimeout = null;
+
+    // Toast notification helper
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'custom-toast';
+      const icon = type === 'success' ? 'bi-check-circle-fill text-success' : 'bi-exclamation-triangle-fill text-danger';
+      toast.innerHTML = `
+        <i class="bi ${icon} fs-5"></i>
+        <div class="small fw-semibold text-dark">${message}</div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'all 0.3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Toggle sidebar on mobile
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
+    }
+
+    // Switch main navigation
+    function switchMainTab(tabName, el) {
+      document.querySelectorAll('.nav-custom-btn').forEach(btn => btn.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const kpiSection = document.getElementById('kpiSection');
+      const formColumn = document.getElementById('formColumn');
+      const panelCustomers = document.getElementById('panelCustomers');
+      const panelHistory = document.getElementById('panelHistory');
+
+      // Default hide all dynamic sections
+      if (kpiSection) kpiSection.style.display = 'none';
+      if (formColumn) formColumn.style.display = 'none';
+      if (panelCustomers) panelCustomers.style.display = 'none';
+      if (panelHistory) panelHistory.style.display = 'none';
+
+      if (tabName === 'dashboard') {
+        if (kpiSection) kpiSection.style.display = 'flex';
+        if (formColumn) formColumn.style.display = 'block';
+        if (panelCustomers) panelCustomers.style.display = 'block';
+        if (panelHistory) panelHistory.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (tabName === 'customers') {
+        if (formColumn) formColumn.style.display = 'block';
+        if (panelCustomers) panelCustomers.style.display = 'block';
+        const trigger = document.getElementById('pill-cust-btn');
+        if (trigger) bootstrap.Tab.getOrCreateInstance(trigger).show();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (tabName === 'interactions') {
+        if (formColumn) formColumn.style.display = 'block';
+        if (panelHistory) panelHistory.style.display = 'block';
+        const trigger = document.getElementById('pill-inter-btn');
+        if (trigger) bootstrap.Tab.getOrCreateInstance(trigger).show();
+
+        const historyTrigger = document.querySelector('[data-bs-target="#tab-interactions"]');
+        if (historyTrigger) bootstrap.Tab.getOrCreateInstance(historyTrigger).show();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (tabName === 'contacts') {
+        if (formColumn) formColumn.style.display = 'block';
+        if (panelHistory) panelHistory.style.display = 'block';
+        const trigger = document.getElementById('pill-contact-btn');
+        if (trigger) bootstrap.Tab.getOrCreateInstance(trigger).show();
+
+        const historyTrigger = document.querySelector('[data-bs-target="#tab-contacts"]');
+        if (historyTrigger) bootstrap.Tab.getOrCreateInstance(historyTrigger).show();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Load KPI Stats
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        document.getElementById('kpiCustomers').innerText = data.totalCustomers ?? 0;
+        document.getElementById('kpiInteractions').innerText = data.totalInteractions ?? 0;
+        document.getElementById('kpiPending').innerText = data.pendingInteractions ?? 0;
+        document.getElementById('kpiContacts').innerText = data.totalContacts ?? 0;
+      } catch (e) {
+        console.error('Lỗi khi tải stats:', e);
+      }
+    }
+
+    // Load Customers
+    async function loadCustomers(search = '') {
+      try {
+        const url = search ? `/api/customers?search=${encodeURIComponent(search)}` : '/api/customers';
+        const res = await fetch(url);
+        const data = await res.json();
+        const tbody = document.querySelector('#customerTable tbody');
+        const selectInt = document.getElementById('intCustomerId');
+        const selectContact = document.getElementById('contactCustomerId');
+        const badgeCount = document.getElementById('customerCountBadge');
+
+        tbody.innerHTML = '';
+        badgeCount.innerText = data.length;
+
+        if (data.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="text-center py-5">
+                <i class="bi bi-inbox fs-1 text-muted d-block mb-2"></i>
+                <span class="text-muted fw-semibold">Không tìm thấy khách hàng nào phù hợp</span>
+              </td>
+            </tr>`;
+          return;
+        }
+
+        selectInt.innerHTML = '<option value="">-- Chọn khách hàng chăm sóc --</option>';
+        selectContact.innerHTML = '<option value="">-- Chọn khách hàng --</option>';
+
+        data.forEach(c => {
+          selectInt.innerHTML += `<option value="${c.id}">${c.name} (${c.company || 'Cá nhân'})</option>`;
+          selectContact.innerHTML += `<option value="${c.id}">${c.name} (${c.company || 'Cá nhân'})</option>`;
+
+          // Get initials for avatar
+          const initials = c.name ? c.name.split(' ').map(n => n[0]).slice(-2).join('').toUpperCase() : 'KH';
+
+          tbody.innerHTML += `
+            <tr>
+              <td><span class="badge bg-light text-secondary border">#${c.id}</span></td>
+              <td>
+                <div class="d-flex align-items-center gap-3">
+                  <div class="customer-avatar">${initials}</div>
+                  <div>
+                    <div class="fw-bold text-dark">${c.name}</div>
+                    <small class="text-muted">${c.company || 'Khách hàng cá nhân'}</small>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a href="mailto:${c.email}" class="text-decoration-none text-secondary">
+                  <i class="bi bi-envelope me-1 text-muted"></i>${c.email}
+                </a>
+              </td>
+              <td>
+                ${c.phone ? `<span class="fw-semibold text-dark"><i class="bi bi-telephone me-1 text-muted"></i>${c.phone}</span>` : '<span class="text-muted">-</span>'}
+              </td>
+              <td>
+                <span class="badge badge-soft-primary">${c.company || 'Cá nhân'}</span>
+              </td>
+              <td class="text-end">
+                <div class="d-inline-flex gap-1">
+                  <button class="btn-action-icon view" onclick="viewCustomerDetail(${c.id})" title="Xem Timeline hồ sơ">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn-action-icon edit" onclick="editCustomer(${JSON.stringify(c).replace(/"/g, '&quot;')})" title="Sửa thông tin">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn-action-icon delete" onclick="deleteCustomer(${c.id})" title="Xóa khách hàng">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Load Interactions
+    async function loadInteractions() {
+      try {
+        const res = await fetch('/api/interactions');
+        const data = await res.json();
+        const tbody = document.querySelector('#interactionTable tbody');
+        tbody.innerHTML = '';
+        if (data.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="text-center py-5">
+                <i class="bi bi-chat-square-dots fs-1 text-muted d-block mb-2"></i>
+                <span class="text-muted fw-semibold">Chưa có nhật ký tương tác nào được ghi nhận</span>
+              </td>
+            </tr>`;
+          return;
+        }
+
+        data.forEach(i => {
+          const isPending = i.status === 'Pending';
+          const badgeClass = isPending ? 'badge-soft-warning' : 'badge-soft-success';
+          const time = new Date(i.created_at).toLocaleString('vi-VN');
+
+          tbody.innerHTML += `
+            <tr>
+              <td>
+                <div class="fw-bold text-dark">${i.customer_name}</div>
+                <small class="text-muted">${i.customer_company || 'Cá nhân'}</small>
+              </td>
+              <td><span class="badge badge-soft-purple">${i.interaction_type}</span></td>
+              <td style="max-width: 280px;" class="text-truncate" title="${i.content}">
+                ${i.content}
+              </td>
+              <td class="small text-muted">${time}</td>
+              <td>
+                <span class="${badgeClass}">
+                  ${isPending ? '<i class="bi bi-clock me-1"></i>Chờ xử lý' : '<i class="bi bi-check2-circle me-1"></i>Hoàn thành'}
+                </span>
+              </td>
+              <td class="text-end">
+                <div class="d-inline-flex gap-1">
+                  ${isPending ? `
+                    <button class="btn-action-icon toggle" onclick="toggleInteractionStatus(${i.id}, 'Completed')" title="Đánh dấu hoàn thành">
+                      <i class="bi bi-check-lg text-success"></i>
+                    </button>
+                  ` : `
+                    <button class="btn-action-icon toggle" onclick="toggleInteractionStatus(${i.id}, 'Pending')" title="Đưa về chờ xử lý">
+                      <i class="bi bi-arrow-counterclockwise text-warning"></i>
+                    </button>
+                  `}
+                  <button class="btn-action-icon delete" onclick="deleteInteraction(${i.id})" title="Xóa">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Load Contacts
+    async function loadContacts() {
+      try {
+        const res = await fetch('/api/contacts');
+        const data = await res.json();
+        const tbody = document.querySelector('#contactsTable tbody');
+        tbody.innerHTML = '';
+        if (data.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-5">
+                <i class="bi bi-telephone-x fs-1 text-muted d-block mb-2"></i>
+                <span class="text-muted fw-semibold">Chưa có đầu mối liên hệ phụ nào</span>
+              </td>
+            </tr>`;
+          return;
+        }
+
+        data.forEach(c => {
+          const time = new Date(c.contact_date).toLocaleString('vi-VN');
+          tbody.innerHTML += `
+            <tr>
+              <td>
+                <div class="fw-bold text-dark">${c.customer_name}</div>
+                <small class="text-muted">${c.customer_company || 'Cá nhân'}</small>
+              </td>
+              <td><span class="badge badge-soft-primary"><i class="bi bi-chat-dots me-1"></i>${c.channel}</span></td>
+              <td>${c.note || '<span class="text-muted">-</span>'}</td>
+              <td class="small text-muted">${time}</td>
+              <td class="text-end">
+                <button class="btn-action-icon delete" onclick="deleteContact(${c.id})" title="Xóa đầu mối">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Real-time Search
+    function handleSearch() {
+      clearTimeout(searchTimeout);
+      const query = document.getElementById('globalSearchInput').value;
+      searchTimeout = setTimeout(() => {
+        loadCustomers(query);
+      }, 250);
+    }
+
+    // Load All
+    function loadAllData() {
+      loadStats();
+      loadCustomers();
+      loadInteractions();
+      loadContacts();
+      showToast('Đã làm mới dữ liệu hệ thống!');
+    }
+
+    // Customer Form Submit
+    document.getElementById('customerForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('editCustomerId').value;
+      const body = {
+        name: document.getElementById('custName').value,
+        email: document.getElementById('custEmail').value,
+        phone: document.getElementById('custPhone').value,
+        company: document.getElementById('custCompany').value,
+      };
+
+      try {
+        let res;
+        if (id) {
+          res = await fetch(`/api/customers/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+        } else {
+          res = await fetch('/api/customers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+        }
+
+        const data = await res.json();
+        if (!res.ok) {
+          alert(data.error || 'Có lỗi xảy ra');
+          return;
+        }
+
+        showToast(id ? 'Cập nhật thông tin khách hàng thành công!' : 'Đã thêm khách hàng mới vào hệ thống!');
+        cancelEditCustomer();
+        loadAllData();
+      } catch (err) {
+        alert('Lỗi kết nối máy chủ');
+      }
+    };
+
+    function editCustomer(c) {
+      document.getElementById('editCustomerId').value = c.id;
+      document.getElementById('custName').value = c.name;
+      document.getElementById('custEmail').value = c.email;
+      document.getElementById('custPhone').value = c.phone || '';
+      document.getElementById('custCompany').value = c.company || '';
+
+      document.getElementById('custSubmitBtn').innerHTML = '<i class="bi bi-check2-circle me-1"></i> Cập Nhật';
+      document.getElementById('custCancelBtn').classList.remove('d-none');
+
+      // Switch pill to customer form
+      const trigger = document.getElementById('pill-cust-btn');
+      bootstrap.Tab.getOrCreateInstance(trigger).show();
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
+
+    function cancelEditCustomer() {
+      document.getElementById('customerForm').reset();
+      document.getElementById('editCustomerId').value = '';
+      document.getElementById('custSubmitBtn').innerHTML = '<i class="bi bi-save2 me-1"></i> Lưu Khách Hàng';
+      document.getElementById('custCancelBtn').classList.add('d-none');
+    }
+
+    async function deleteCustomer(id) {
+      if (!confirm('Bạn có chắc chắn muốn xóa khách hàng này? Các tương tác liên quan sẽ bị xóa.')) return;
+      await fetch(`/api/customers/${id}`, { method: 'DELETE' });
+      showToast('Đã xóa khách hàng thành công!');
+      loadAllData();
+    }
+
+    // Interaction Form Submit
+    document.getElementById('interactionForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const body = {
+        customer_id: document.getElementById('intCustomerId').value,
+        interaction_type: document.getElementById('intType').value,
+        status: document.getElementById('intStatus').value,
+        content: document.getElementById('intContent').value,
+      };
+
+      const res = await fetch('/api/interactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        document.getElementById('intContent').value = '';
+        showToast('Đã ghi nhận tương tác chăm sóc mới!');
+        loadAllData();
+      }
+    };
+
+    async function toggleInteractionStatus(id, newStatus) {
+      await fetch(`/api/interactions/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      showToast(`Đã chuyển trạng thái sang ${newStatus}!`);
+      loadAllData();
+    }
+
+    async function deleteInteraction(id) {
+      if (!confirm('Bạn có chắc chắn muốn xóa tương tác này?')) return;
+      await fetch(`/api/interactions/${id}`, { method: 'DELETE' });
+      showToast('Đã xóa lượt tương tác thành công!');
+      loadAllData();
+    }
+
+    // Contact Form Submit
+    document.getElementById('contactForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const body = {
+        customer_id: document.getElementById('contactCustomerId').value,
+        channel: document.getElementById('contactChannel').value,
+        note: document.getElementById('contactNote').value,
+      };
+      const res = await fetch('/api/contacts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        document.getElementById('contactNote').value = '';
+        showToast('Đã thêm kênh liên hệ phụ thành công!');
+        loadAllData();
+      }
+    };
+
+    async function deleteContact(id) {
+      if (!confirm('Bạn có muốn xóa đầu mối liên hệ này?')) return;
+      await fetch(`/api/contacts/${id}`, { method: 'DELETE' });
+      showToast('Đã xóa đầu mối liên hệ!');
+      loadAllData();
+    }
+
+    // Modal Customer Timeline
+    async function viewCustomerDetail(id) {
+      try {
+        const res = await fetch(`/api/customers/${id}`);
+        const data = await res.json();
+        const c = data.customer;
+
+        const initials = c.name ? c.name.split(' ').map(n => n[0]).slice(-2).join('').toUpperCase() : 'KH';
+        document.getElementById('modalAvatar').innerText = initials;
+        document.getElementById('detailCustomerName').innerText = `${c.name}`;
+        document.getElementById('detailCustomerSubtitle').innerText = `Mã hồ sơ: #${c.id} • Tham gia từ ${new Date(c.created_at).toLocaleDateString('vi-VN')}`;
+        document.getElementById('detailCustomerEmail').innerText = c.email;
+        document.getElementById('detailCustomerPhone').innerText = c.phone || 'Chưa cập nhật';
+        document.getElementById('detailCustomerCompany').innerText = c.company || 'Cá nhân';
+
+        const timeline = document.getElementById('customerTimeline');
+        timeline.innerHTML = '';
+        if (!data.interactions || data.interactions.length === 0) {
+          timeline.innerHTML = `
+            <div class="text-center py-4">
+              <i class="bi bi-chat-square-dots text-muted fs-3 d-block mb-1"></i>
+              <span class="text-muted small">Chưa có lịch sử chăm sóc nào cho khách hàng này.</span>
+            </div>`;
+        } else {
+          data.interactions.forEach(it => {
+            const time = new Date(it.created_at).toLocaleString('vi-VN');
+            const isCompleted = it.status === 'Completed';
+            const badge = isCompleted ? 'badge-soft-success' : 'badge-soft-warning';
+
+            timeline.innerHTML += `
+              <div class="timeline-card">
+                <div class="timeline-dot"></div>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="fw-bold text-dark"><i class="bi bi-tag me-1 text-primary"></i>${it.interaction_type}</span>
+                  <span class="${badge}">
+                    ${isCompleted ? 'Hoàn thành' : 'Chờ xử lý'}
+                  </span>
+                </div>
+                <p class="mb-1 text-secondary" style="font-size: 0.9rem; line-height: 1.5;">${it.content}</p>
+                <div class="text-muted small"><i class="bi bi-clock me-1"></i>${time}</div>
+              </div>
+            `;
+          });
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('customerDetailModal'));
+        modal.show();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Initial Load
+    loadStats();
+    loadCustomers();
+    loadInteractions();
+    loadContacts();
+  </script>
+</body>
+
+</html>
