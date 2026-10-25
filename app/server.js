@@ -14,13 +14,9 @@ app.set('trust proxy', 1);
 const port = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'careflow-crm-super-secret-jwt-key-2026';
 
-// ---------------------- SECURITY HEADERS & MIDDLEWARE ----------------------
-app.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  next();
-});
+// Ẩn X-Powered-By để bảo mật thông tin máy chủ
+app.disable('x-powered-by');
+
 
 app.use(cors({
   origin: true,
