@@ -97,10 +97,10 @@ pool.on('error', (err) => {
 // ---------------------- AUDIT LOG HELPER ----------------------
 async function recordAuditLog(userId, username, action, entityType, entityId, details, ip) {
   try {
+    const logDetails = `${details || ''}${entityType ? ` [${entityType} #${entityId || ''}]` : ''}${ip ? ` (IP: ${ip})` : ''}`;
     await pool.query(
-      `INSERT INTO audit_logs (user_id, username, action, entity_type, entity_id, details, ip_address) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [userId || null, username || 'Anonymous', action, entityType, entityId || null, details || '', ip || '']
+      `INSERT INTO audit_logs (user_id, action, details) VALUES ($1, $2, $3)`,
+      [userId || null, action, logDetails]
     );
   } catch (err) {
     console.error('[Audit Log Error]', err.message);
@@ -216,7 +216,13 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const user = result.rows[0];
-    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+    let isPasswordValid = false;
+    if (user.password_hash && user.password_hash.startsWith('$2')) {
+      isPasswordValid = await bcrypt.compare(password, user.password_hash);
+    } else {
+      isPasswordValid = (password === user.password_hash) || 
+                        (password.toLowerCase() === (user.password_hash || '').toLowerCase());
+    }
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Tài khoản hoặc mật khẩu không chính xác' });
     }
@@ -680,7 +686,10 @@ app.delete('/api/interactions/:id', authenticateToken, requireRole(['admin']), a
 app.get('/api/audit-logs', authenticateToken, requireRole(['admin']), async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM audit_logs ORDER BY created_at DESC LIMIT 100'
+      `SELECT a.*, COALESCE(u.username, 'System') as username, u.full_name 
+       FROM audit_logs a 
+       LEFT JOIN users u ON a.user_id = u.id 
+       ORDER BY a.created_at DESC LIMIT 100`
     );
     res.json(result.rows);
   } catch (err) {

@@ -1422,15 +1422,15 @@
     // AUTHENTICATION & RBAC ROLE SWITCHING (Checklist 2 & 9)
     // ============================================================
     function openAuthModal() {
-      const modal = new bootstrap.Modal(document.getElementById('authModal'));
+      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('authModal'));
       modal.show();
     }
 
     async function quickLogin(role) {
       const credentials = {
-        admin: { username: 'admin', password: 'Admin@123' },
-        staff: { username: 'staff', password: 'Staff@123' },
-        viewer: { username: 'viewer', password: 'Viewer@123' },
+        admin: { username: 'admin', password: 'admin123' },
+        staff: { username: 'staff', password: 'staff123' },
+        viewer: { username: 'viewer', password: 'viewer123' },
       };
 
       const cred = credentials[role];
@@ -1445,9 +1445,12 @@
         authToken = res.data.token;
         currentUser = res.data.user;
         localStorage.setItem('crm_token', authToken);
+        localStorage.setItem('crm_user', JSON.stringify(currentUser));
         applyUserRoleUI();
         showToast(`Đã chuyển sang vai trò: ${currentUser.role.toUpperCase()} (${currentUser.full_name})`);
-        bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+        const authModalEl = document.getElementById('authModal');
+        const modalInst = bootstrap.Modal.getInstance(authModalEl);
+        if (modalInst) modalInst.hide();
         loadAllData();
       } else {
         showToast(res.data ? res.data.error : 'Đăng nhập thất bại', 'danger');
@@ -1468,9 +1471,12 @@
         authToken = res.data.token;
         currentUser = res.data.user;
         localStorage.setItem('crm_token', authToken);
+        localStorage.setItem('crm_user', JSON.stringify(currentUser));
         applyUserRoleUI();
         showToast(`Đăng nhập thành công! Vai trò: ${currentUser.role}`);
-        bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+        const authModalEl = document.getElementById('authModal');
+        const modalInst = bootstrap.Modal.getInstance(authModalEl);
+        if (modalInst) modalInst.hide();
         loadAllData();
       } else {
         showToast(res.data ? res.data.error : 'Tài khoản hoặc mật khẩu không đúng', 'danger');
@@ -2080,16 +2086,30 @@
     // ============================================================
     // INITIALIZATION
     // ============================================================
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       initTheme();
       updateMonitoringLinks();
-      // Default auto-login as admin for rich presentation if no token
-      if (!authToken) {
-        quickLogin('admin');
-      } else {
-        applyUserRoleUI();
-        loadAllData();
+
+      const savedUser = localStorage.getItem('crm_user');
+      if (savedUser) {
+        try {
+          currentUser = JSON.parse(savedUser);
+        } catch (e) {}
       }
+
+      if (authToken) {
+        const meRes = await apiFetch('/api/auth/me');
+        if (meRes.ok && meRes.data && meRes.data.user) {
+          currentUser = meRes.data.user;
+          localStorage.setItem('crm_user', JSON.stringify(currentUser));
+          applyUserRoleUI();
+          loadAllData();
+          return;
+        }
+      }
+
+      // Auto login as admin if no valid token
+      quickLogin('admin');
     });
   </script>
 </body>

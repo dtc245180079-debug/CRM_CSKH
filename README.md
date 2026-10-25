@@ -100,12 +100,12 @@ CRM_CSKH/
 ### 4.1. Tài Khoản Đăng Nhập Web CRM (Tích hợp 1-Click Role Switcher trên UI)
 | Tên Đăng Nhập | Mật Khẩu | Vai Trò (Role) | Quyền Hạn |
 | :--- | :--- | :--- | :--- |
-| `admin` | `Admin@123` | **Admin** | Toàn quyền thêm, sửa, xóa khách hàng, xem Audit Logs |
-| `staff` | `Staff@123` | **Staff** | Thêm mới, cập nhật khách hàng & tương tác (khóa tính năng xóa) |
-| `viewer` | `Viewer@123` | **Viewer** | Chế độ chỉ đọc dữ liệu (khóa toàn bộ thao tác ghi/sửa/xóa) |
+| `admin` | `admin123` | **Admin** | Toàn quyền thêm, sửa, xóa khách hàng, xem Audit Logs |
+| `staff` | `staff123` | **Staff** | Thêm mới, cập nhật khách hàng & tương tác (khóa tính năng xóa) |
+| `viewer` | `viewer123` | **Viewer** | Chế độ chỉ đọc dữ liệu (khóa toàn bộ thao tác ghi/sửa/xóa) |
 
 ### 4.2. Tài Khoản Quản Trị Hạ Tầng
-- **pgAdmin 4:** Email: `admin@crm.local` | Mật khẩu: `PgAdminSecurePass2026!`
+- **pgAdmin 4:** Email: `admin@crm.com` | Mật khẩu: `PgAdminSecurePass2026!`
 - **Grafana:** Tài khoản: `admin` | Mật khẩu: `admin`
 
 ---
