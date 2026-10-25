@@ -1,0 +1,12 @@
+apiVersion: 1
+
+providers:
+  - name: 'CareFlow CRM Dashboards'
+    orgId: 1
+    folder: 'CRM Services'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards
